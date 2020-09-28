@@ -38,12 +38,12 @@
 
 ## Дизайн
 
-* [Главная страница](./resources/index.html).
-* [Страница раздела](./resources/smartphones.html).
-* [Страница незаполненного раздела](./resources/empty_section.html).
-* [Страница товара](./resources/phone.html).
-* [Страница корзины](./resources/cart.html).
-* [Страница входа](./resources/login.html).
+* [Главная страница](resources/index.html).
+* [Страница раздела](resources/smartphones.html).
+* [Страница незаполненного раздела](resources/empty_section.html).
+* [Страница товара](resources/phone.html).
+* [Страница корзины](resources/cart.html).
+* [Страница входа](resources/login.html).
 
 ## Требования к организации системы
 
@@ -61,7 +61,7 @@
 
 ## Дополнительные задачи
 
-* Реализовать механизм анонимных отзывов как показано на макете [Страница товара](./resources/phone.html).
+* Реализовать механизм анонимных отзывов как показано на макете [Страница товара](resources/phone.html).
 * Реализовать возможность регистрации по почте (без подтверждения почты).
 
 ---
