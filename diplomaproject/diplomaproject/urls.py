@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app.views import index_view, phone_view, smartphone_view, login_view, cart_view
+from app.views import index_view, phone_view, smartphone_view, login_view, cart_view, empty_section_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,5 @@ urlpatterns = [
     path('smartphones/', smartphone_view),
     path('login/', login_view),
     path('cart/', cart_view),
+    path('empty_section/', empty_section_view),
 ]
