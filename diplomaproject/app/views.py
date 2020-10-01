@@ -34,3 +34,10 @@ def cart_view(request):
     context = {}
 
     return render(request, template, context)
+
+
+def empty_section_view(request):
+    template = 'empty_section.html'
+    context = {}
+
+    return render(request, template, context)
