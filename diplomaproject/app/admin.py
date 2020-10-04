@@ -3,10 +3,10 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet
 
-from .models import Product, Reviews, Category, ProductCategoryInfo
+from .models import Product, Review, Category
 
 
-class ProductInfoInlineFormset(BaseInlineFormSet):
+class ProductReviewInlineFormset(BaseInlineFormSet):
     def clean(self):
         for form in self.forms:
             # В form.cleaned_data будет словарь с данными
@@ -16,35 +16,38 @@ class ProductInfoInlineFormset(BaseInlineFormSet):
             # таким образом объект не будет сохранен,
             # а пользователю выведется соответствующее сообщение об ошибке
             #raise ValidationError('Тут всегда ошибка')
-            raise ValidationError()
+            #raise ValidationError()
         return super().clean()  # вызываем базовый код переопределяемого метода
 
 
-class ProductInfoInLine(admin.TabularInline):
-    model = ProductCategoryInfo
-    formset = ProductInfoInlineFormset
+class ProductReviewInLine(admin.TabularInline):
+    model = Review
+    formset = ProductReviewInlineFormset
+    extra = 1
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'description', 'image',)
+    list_display = ('name', 'category', 'slug', 'price',
+                    'available',)
+    list_filter = ('available', 'category',)
+    list_editable = ('price', 'available',)
+    prepopulated_fields = {'slug': ('name',)}
     inlines = [
-        ProductInfoInLine,
+        ProductReviewInLine,
     ]
 
 
-class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'text', 'product',)
-
-
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_root',)
+    list_display = ('name', 'is_root', 'slug',)
+    prepopulated_fields = {'slug': ('name',)}
 
 
-class ProductCategoryInfoAdmin(admin.ModelAdmin):
-    list_display = ('product', 'category',)
+class ReviewsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'product', 'text', 'created', 'updated',)
+    list_filter = ('created', 'updated',)
+    list_editable = ('text',)
 
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Reviews, ReviewsAdmin)
+admin.site.register(Review, ReviewsAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(ProductCategoryInfo, ProductCategoryInfoAdmin)
