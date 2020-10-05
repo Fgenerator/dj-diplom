@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('price', models.IntegerField()),
                 ('description', models.TextField(max_length=500)),
-                ('image', models.FileField(upload_to='products/%Y/%m/%d/')),
+                ('image', models.FileField(upload_to='media/%Y/%m/%d/')),
             ],
         ),
         migrations.CreateModel(
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='category',
-            name='products',
+            name='media',
             field=models.ManyToManyField(default=None, through='app.ProductCategoryInfo', to='app.Product'),
         ),
     ]
