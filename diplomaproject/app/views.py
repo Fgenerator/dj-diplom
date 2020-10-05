@@ -29,7 +29,10 @@ def product_detail(request, id, slug):
 def index_view(request):
     template = 'index.html'
     products = Product.objects.filter(available=True)
-    context = {}
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
 
     return render(request, template, context)
 
