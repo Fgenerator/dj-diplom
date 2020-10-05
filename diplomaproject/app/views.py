@@ -13,7 +13,7 @@ def product_list(request, category_slug=None):
                   'shop/product/list.html',
                   {'category': category,
                    'categories': categories,
-                   'products': products})
+                   'media': products})
 
 
 def product_detail(request, id, slug):
@@ -28,10 +28,12 @@ def product_detail(request, id, slug):
 
 def index_view(request):
     template = 'index.html'
-    products = Product.objects.filter(available=True)
     categories = Category.objects.all()
+    reviews = Review.objects.all()
+
     context = {
-        'categories': categories
+        'categories': categories,
+        'reviews': reviews,
     }
 
     return render(request, template, context)
