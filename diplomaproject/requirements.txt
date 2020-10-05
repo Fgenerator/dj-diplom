@@ -2,6 +2,8 @@ backcall==0.2.0
 colorama==0.4.3
 decorator==4.4.2
 Django==2.2.16
+django-ckeditor==6.0.0
+django-js-asset==1.2.2
 ipython==7.18.1
 ipython-genutils==0.2.0
 jedi==0.17.2
