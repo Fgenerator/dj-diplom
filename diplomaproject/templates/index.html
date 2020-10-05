@@ -3,66 +3,21 @@
 
 {% block title %}Главная страница{% endblock %}
 
+{% block menu %}
+  {% for category in categories %}
+    <a class="dropdown-item" href="/smartphones">
+      {{ category.name }}</a>
+  {% endfor %}
+{% endblock %}
+
 {% block content %}
 
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="/">Просто магазин</a>
-  <img src="{% static 'logo.svg' %}" alt="" width="42" height="42">
-  <button class="navbar-toggler" type="button" data-toggle="collapse"
-          data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
-          aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          Главная</a>
-      </li>
-
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Категории</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
-
-          {% for category in categories %}
-            <a class="dropdown-item" href="/smartphones">
-            {{ category.name }}</a>
-          {% endfor %}
-
-        </div>
-      </li>
-
-
-      <li class="nav-item">
-        <a class="nav-link" href="/empty_section">
-          Аксесcуары</a>
-      </li>
-
-
-    </ul>
-    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-       href="/cart">
-      Корзина</a>
-
-
-    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-       href="/login">
-      Войти</a>
-
-  </div>
-</nav>
-
-
 <main role="main">
-
+  {% for review in reviews %}
   <div class="jumbotron">
     <div class="container">
-      <h1 class="display-4">Добро пожаловать на сайт просто магазина</h1>
-      <p>Лучшие мобилы только у нас:</p>
+      <h1 class="display-4">{{ review.header }}</h1>
+      <p>{{ review.text }}</p>
     </div>
   </div>
 
@@ -70,13 +25,13 @@
   <div class="container mb-5">
     <!-- Example row of columns -->
     <div class="row">
-
+  {% for product in review.products.all %}
       <div class="col-md-4">
-        <h2>Nexus 5x</h2>
+        <h2>{{ product.name }}</h2>
 
         <a href="/phone">
 
-          <img src="/static/nexus5x.webp" width="180">
+          <img src="{{ product.image.url }}" width="180">
 
         </a>
 
@@ -84,66 +39,10 @@
           <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
         </form>
       </div>
-
-      <div class="col-md-4">
-        <h2>iPhone 7</h2>
-
-        <a href="/phone">
-
-          <img src="/static/iphone7.webp" width="180">
-
-        </a>
-
-        <form>
-          <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
-        </form>
-      </div>
-
-      <div class="col-md-4">
-        <h2>Pixel 2</h2>
-
-        <a href="/phone">
-
-          <img src="/static/pixel2.webp" width="180">
-
-        </a>
-
-        <form>
-          <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
-        </form>
-      </div>
-
+  {% endfor %}
     </div>
   </div> <!-- /container -->
-
-  <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-4">Не знаете что одеть летом?</h1>
-      <p>Вот что мы можем предложить:</p>
-    </div>
-  </div>
-
-
-  <div class="container mb-5">
-    <!-- Example row of columns -->
-    <div class="row">
-
-      <div class="col-md-4">
-        <h2>Фуфайка</h2>
-
-        <a href="/phone">
-
-          <img src="/static/fufajka.jpg" width="180">
-
-        </a>
-
-        <form>
-          <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
-        </form>
-      </div>
-
-    </div>
-  </div> <!-- /container -->
+  {% endfor %}
 
 </main>
 
