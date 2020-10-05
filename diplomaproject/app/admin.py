@@ -6,35 +6,12 @@ from django.forms import BaseInlineFormSet
 from .models import Product, Review, Category
 
 
-class ProductReviewInlineFormset(BaseInlineFormSet):
-    def clean(self):
-        for form in self.forms:
-            # В form.cleaned_data будет словарь с данными
-            # каждой отдельной формы, которые вы можете проверить
-            form.cleaned_data
-            # вызовом исключения ValidationError можно указать админке о наличие ошибки
-            # таким образом объект не будет сохранен,
-            # а пользователю выведется соответствующее сообщение об ошибке
-            #raise ValidationError('Тут всегда ошибка')
-            #raise ValidationError()
-        return super().clean()  # вызываем базовый код переопределяемого метода
-
-
-class ProductReviewInLine(admin.TabularInline):
-    model = Review
-    formset = ProductReviewInlineFormset
-    extra = 1
-
-
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'slug', 'price',
                     'available',)
     list_filter = ('available', 'category',)
     list_editable = ('price', 'available',)
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [
-        ProductReviewInLine,
-    ]
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -43,9 +20,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'product', 'text', 'created', 'updated',)
+    list_display = ('name', 'get_products', 'header', 'text', 'created', 'updated',)
     list_filter = ('created', 'updated',)
-    list_editable = ('text',)
+    list_editable = ('header', 'text',)
+
+    def get_products(self, obj):
+        return ", ".join([product.name for product in obj.products.all()])
+
+    get_products.short_description = 'Products'  # Renames column head
 
 
 admin.site.register(Product, ProductAdmin)
