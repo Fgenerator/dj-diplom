@@ -18,6 +18,9 @@ from django.urls import path
 
 from app.views import index_view, phone_view, smartphone_view, login_view, cart_view, empty_section_view
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_view),
@@ -27,3 +30,6 @@ urlpatterns = [
     path('cart/', cart_view),
     path('empty_section/', empty_section_view),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
