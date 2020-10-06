@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+
+
+<main role="main">
+
+  <div class="container">
+    <!-- Example row of columns -->
+
+    <h1>{{ current_category.name }}</h1>
+
+    <div class="row">
+      {% for product in current_products %}
+        <div class="col-md-4">
+          <h2>{{ product.name }}</h2>
+
+          <a href="/product/{{ product.slug }}">
+
+            <img src="{{ product.image.url }}" width="180">
+
+          </a>
+
+          <form>
+            <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    {% if prev_page_url %}<a class="button button-primary" href="{{ prev_page_url }}">⟵</a>{% endif %}
+    <a class="button disabled" href="">Страница {{ current_page }}</a>
+    {% if next_page_url %}<a class="button button-primary" href="{{ next_page_url }}">⟶</a>{% endif %}
+  </div> <!-- /container -->
+
+</main>
+
+{% endblock %}
