@@ -3,12 +3,6 @@
 
 {% block title %}Главная страница{% endblock %}
 
-{% block menu %}
-  {% for category in categories %}
-    <a class="dropdown-item" href="/smartphones">
-      {{ category.name }}</a>
-  {% endfor %}
-{% endblock %}
 
 {% block content %}
 
@@ -29,7 +23,7 @@
       <div class="col-md-4">
         <h2>{{ product.name }}</h2>
 
-        <a href="/phone">
+        <a href="/product/{{ product.slug }}">
 
           <img src="{{ product.image.url }}" width="180">
 
