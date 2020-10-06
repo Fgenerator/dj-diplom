@@ -1,9 +1,10 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 class Product(models.Model):
     category = models.ForeignKey('Category',
-                                 related_name='media',
+                                 related_name='products',
                                  default=None,
                                  on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True)
@@ -41,9 +42,12 @@ class Category(models.Model):
 class Review(models.Model):
     name = models.CharField(max_length=50)
     header = models.CharField(max_length=100)
-    text = models.TextField(max_length=500)
+    text = RichTextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     products = models.ManyToManyField(Product,
                                       related_name='media',
                                       default=None)
+
+    class Meta:
+        ordering = ('created',)
