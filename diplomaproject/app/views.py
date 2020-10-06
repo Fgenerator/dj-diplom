@@ -85,7 +85,6 @@ def category_view(request, category_slug):
     })
 
 
-
 def login_view(request):
     template = 'login.html'
     context = {}

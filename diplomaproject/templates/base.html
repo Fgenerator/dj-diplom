@@ -32,12 +32,7 @@
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Категории</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
-
-          {% for category in categories %}
-            <a class="dropdown-item" href="/categories/{{ category.slug }}">
-              {{ category.name }}</a>
-          {% endfor %}
-
+          {% block menu %} {% endblock %}
         </div>
       </li>
 
