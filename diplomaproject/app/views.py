@@ -1,34 +1,34 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .forms import SignUpForm
 from .models import Category, Product, Review
 
 import urllib
 from django.core.paginator import Paginator
-from django.urls import reverse
-from django.shortcuts import render_to_response, redirect
 
 
-def product_list(request, category_slug=None):
-    category = None
+def signup_view(request):
+    template = 'registration/signup.html'
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-    return render(request,
-                  'shop/product/list.html',
-                  {'category': category,
-                   'categories': categories,
-                   'media': products})
+    message = ''
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        else:
+            form = SignUpForm(request.POST)
+            message = 'Введены некорректные данные'
+    else:
+        form = SignUpForm(request.POST)
 
+    context = {
+        'form': form,
+        'categories': categories,
+        'message': message,
+    }
 
-def product_detail(request, id, slug):
-    product = get_object_or_404(Product,
-                                id=id,
-                                slug=slug,
-                                available=True)
-    return render(request,
-                  'shop/product/detail.html',
-                  {'product': product})
+    return render(request, template, context)
 
 
 def index_view(request):
@@ -75,7 +75,7 @@ def category_view(request, category_slug):
         next_page = current_products.next_page_number()
         payload = urllib.parse.urlencode({'page': next_page})
         next_page_url = f'?{payload}'
-    return render_to_response(template, context={
+    return render(request, template, context={
         'current_products': current_products,
         'current_page': current_page,
         'prev_page_url': prev_page_url,
@@ -83,13 +83,6 @@ def category_view(request, category_slug):
         'categories': categories,
         'current_category': current_category,
     })
-
-
-def login_view(request):
-    template = 'login.html'
-    context = {}
-
-    return render(request, template, context)
 
 
 def cart_view(request):

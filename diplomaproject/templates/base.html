@@ -41,17 +41,33 @@
         <a class="nav-link" href="/empty_section">
           Аксесcуары</a>
       </li>
-
-
     </ul>
+
+    <a style="color:white; margin-right:1%; margin-left:1%">Добро пожаловать,
+        {% if request.user.is_authenticated %}
+        {{ request.user.username }}!
+        {% else %}
+        Гость!
+        {% endif %}
+      </a>
+
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
        href="/cart">
       Корзина</a>
 
-
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-       href="/login">
-      Войти</a>
+       href="/signup">
+      Регистрация</a>
+
+    {% if request.user.is_authenticated %}
+    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+         href="/logout">
+        Выйти</a>
+    {% else %}
+    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+         href="/login">
+        Войти</a>
+    {% endif %}
 
   </div>
 </nav>
