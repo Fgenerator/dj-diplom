@@ -39,10 +39,12 @@ def index_view(request):
     template = 'index.html'
     categories = Category.objects.all()
     reviews = Review.objects.all()
+    cart_product_form = CartAddProductForm()
 
     context = {
         'categories': categories,
         'reviews': reviews,
+        'cart_product_form': cart_product_form,
     }
 
     return render(request, template, context)
@@ -66,6 +68,8 @@ def category_view(request, category_slug):
     template = 'categories.html'
     categories = Category.objects.all()
 
+    cart_product_form = CartAddProductForm()
+
     current_category = get_object_or_404(Category, slug=category_slug)
     current_products = current_category.products.all()
 
@@ -88,17 +92,18 @@ def category_view(request, category_slug):
         'next_page_url': next_page_url,
         'categories': categories,
         'current_category': current_category,
+        'cart_product_form': cart_product_form,
     })
 
 
-def cart_view(request):
-    template = 'cart.html'
-    categories = Category.objects.all()
-    context = {
-        'categories': categories,
-    }
-
-    return render(request, template, context)
+# def cart_view(request):
+#     template = 'cart.html'
+#     categories = Category.objects.all()
+#     context = {
+#         'categories': categories,
+#     }
+#
+#     return render(request, template, context)
 
 
 def empty_section_view(request):
@@ -123,7 +128,7 @@ def cart_add(request, product_id):
         cart.add(product=product,
                  quantity=cd['quantity'],
                  override_quantity=cd['override'])
-    return redirect('cart:cart_detail')
+    return redirect('app:cart_detail')
 
 
 @require_POST
@@ -131,9 +136,20 @@ def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
-    return redirect('cart:cart_detail')
+    return redirect('app:cart_detail')
 
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart/detail.html', {'cart': cart})
+    categories = Category.objects.all()
+
+    for item in cart:
+        item['update_quantity_form'] = CartAddProductForm(initial={
+            'quantity': item['quantity'],
+            'override': True})
+
+    context = {
+        'cart': cart,
+        'categories': categories,
+    }
+    return render(request, 'cart.html', context)

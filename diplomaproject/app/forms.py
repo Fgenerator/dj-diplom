@@ -15,7 +15,8 @@ class SignUpForm(UserCreationForm):
 
 class CartAddProductForm(forms.Form):
     quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY_CHOICES,
-                                      coerce=int)
+                                      coerce=int,
+                                      label='Количество')
     override = forms.BooleanField(required=False,
                                   initial=False,
                                   widget=forms.HiddenInput)

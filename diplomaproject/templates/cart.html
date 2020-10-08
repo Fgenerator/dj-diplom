@@ -28,14 +28,32 @@
               <h6 class="my-0">{{ product.name }}</h6>
               <small class="text-muted">{{ product.description }}</small>
             </div>
-            <form action="{% url "cart:cart_remove" product.id %}" method="post">
-            <input type="submit" value="Remove">
-            {% csrf_token %}
+            <span class="text-muted">
+
+              <form action="{% url 'app:cart_add' product.id %}" method="post">
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.override }}
+                <br>
+                <input type="submit" value="Изменить количество">
+                {% csrf_token %}
+              </form>
+
+            </span>
+            <div>
+              <small class="my-0">Цена {{ item.price }}</small>
+              <h6 class="text-muted">Всего {{ item.total_price }}</h6>
+            </div>
+            <form action="{% url 'app:cart_remove' product.id %}" method="post">
+              <br>
+              <input type="submit" value="Удалить">
+              {% csrf_token %}
             </form>
-            <span class="text-muted">{{ item.quantity }}</span>
           </li>
           {% endwith %}
         {% endfor %}
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          Итоговая цена: {{ cart.get_total_price }}
+         </li>
       </ul>
 
       <form class="card p-2" action="{% url 'app:home' %}">

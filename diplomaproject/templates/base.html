@@ -51,6 +51,20 @@
         {% endif %}
       </a>
 
+    <div style="color:white; margin-right:1%">
+      {% with total_items=cart|length %}
+        {% if total_items > 0 %}
+          Корзина:
+          <a href="{% url 'app:cart_detail' %}">
+            {{ total_items }} item{{ total_items|pluralize }},
+            {{ cart.get_total_price }}
+          </a>
+        {% else %}
+          Корзина пуста.
+        {% endif %}
+      {% endwith %}
+    </div>
+
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
        href="/cart">
       Корзина</a>

@@ -30,15 +30,11 @@
         {% else %}
             <p>Товара нет в наличии</p>
         {% endif %}
-        <form action="{% url "app:cart_add" current_product.id %}" method="post">
-          {{ cart_product_form }}
+
+        <form method="post" action="{% url 'app:cart_add' current_product.id %}" method="post">
           {% csrf_token %}
-          <input type="submit" value="Add to cart">
-        </form>
-        <form method="post" action="/cart/">
-          <input type="hidden" name="csrfmiddlewaretoken"
-                 value="N4vcBqzjoYkU7OTDuAT8hq8srpvYX44nJsswuP7e3EYg0Hq8DgxuR0eiXWbSr5RZ">
-          <input type="hidden" name="merchandise_id" value="1">
+          {{ cart_product_form }}
+          <br>
           <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
         </form>
       </div>

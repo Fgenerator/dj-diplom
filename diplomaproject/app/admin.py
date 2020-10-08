@@ -20,9 +20,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_products', 'header', 'text', 'created', 'updated',)
+    list_display = ('name', 'get_products', 'header', 'created', 'updated', 'main_page')
     list_filter = ('created', 'updated',)
-    list_editable = ('header', 'text',)
+    list_editable = ('main_page',)
 
     def get_products(self, obj):
         return ", ".join([product.name for product in obj.products.all()])
