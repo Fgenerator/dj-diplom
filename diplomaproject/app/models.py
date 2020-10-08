@@ -46,8 +46,15 @@ class Review(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     products = models.ManyToManyField(Product,
-                                      related_name='media',
+                                      related_name='products',
                                       default=None)
 
     class Meta:
         ordering = ('created',)
+
+
+# class Order(models.Model):
+#     products = models.ManyToManyField(Product,
+#                                       related_name='products',
+#                                       default=None)
+#     date = models.DateTimeField(auto_now_add=True)

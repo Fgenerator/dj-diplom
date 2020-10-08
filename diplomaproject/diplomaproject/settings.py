@@ -178,3 +178,5 @@ LOGGING = {
 }
 
 AUTHENTICATION_BACKENDS = ['app.backends.EmailBackend']
+
+CART_SESSION_ID = 'cart'

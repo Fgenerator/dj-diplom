@@ -61,7 +61,7 @@
 
     {% if request.user.is_authenticated %}
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-         href="/logout">
+         href="/logout/?next={{request.path}}">
         Выйти</a>
     {% else %}
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"

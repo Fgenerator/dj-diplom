@@ -1,6 +1,10 @@
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
 
-from .forms import SignUpForm
+from .cart import Cart
+from .forms import SignUpForm, CartAddProductForm
 from .models import Category, Product, Review
 
 import urllib
@@ -44,13 +48,15 @@ def index_view(request):
     return render(request, template, context)
 
 
-def product_view(request, product_slug):
+def product_view(request, product_id):
     template = 'product.html'
     categories = Category.objects.all()
-    current_product = get_object_or_404(Product, slug=product_slug)
+    current_product = get_object_or_404(Product, id=product_id)
+    cart_product_form = CartAddProductForm()
     context = {
         'categories': categories,
-        'current_product': current_product
+        'current_product': current_product,
+        'cart_product_form': cart_product_form,
     }
 
     return render(request, template, context)
@@ -87,7 +93,10 @@ def category_view(request, category_slug):
 
 def cart_view(request):
     template = 'cart.html'
-    context = {}
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+    }
 
     return render(request, template, context)
 
@@ -97,3 +106,34 @@ def empty_section_view(request):
     context = {}
 
     return render(request, template, context)
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(request.GET.get('next', ' / '))
+
+
+@require_POST
+def cart_add(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    form = CartAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add(product=product,
+                 quantity=cd['quantity'],
+                 override_quantity=cd['override'])
+    return redirect('cart:cart_detail')
+
+
+@require_POST
+def cart_remove(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    cart.remove(product)
+    return redirect('cart:cart_detail')
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'cart/detail.html', {'cart': cart})
