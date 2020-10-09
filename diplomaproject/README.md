@@ -33,6 +33,8 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+### Для доступа к админке используйте логин admin@admin.admin и пароль admin
+
 ## Задание
 
 Разработать сайт интернет-магазина.
