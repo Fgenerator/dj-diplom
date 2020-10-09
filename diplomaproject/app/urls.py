@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from app.views import index_view, product_view, category_view, empty_section_view, signup_view, logout_view, \
     cart_detail, cart_add, cart_remove
 

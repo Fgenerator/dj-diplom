@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Thank you{% endblock %}
+
+{% block menu %}
+{% for category in categories %}
+<a class="dropdown-item" href="/categories/{{ category.slug }}">
+  {{ category.name }}</a>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+    <h1>Спасибо за заказ!</h1>
+    <p>Ваш заказ был добавлен. Номер заказа:
+    <strong>{{ order.id }}</strong>.</p>
+{% endblock %}

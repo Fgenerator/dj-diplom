@@ -56,7 +56,12 @@
          </li>
       </ul>
 
-      <form class="card p-2" action="{% url 'app:home' %}">
+      <form class="card p-2"
+            {% if request.user.is_authenticated %}
+              action="{% url 'orders:order_create' %}">
+            {% else %}
+              action="{% url 'app:app_login' %}">
+            {% endif %}
         <button type="submit" class="btn btn-secondary">Заказать</button>
       </form>
     </div>
