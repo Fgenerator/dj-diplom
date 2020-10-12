@@ -3,19 +3,31 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet
 
-from .models import Product, Review, Category
+from .models import Product, Review, Category, Subcategory
+
+
+class CategoryInline(admin.TabularInline):
+    model = Subcategory
+    fk_name = 'parent'
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'slug', 'price',
+    list_display = ('name', 'subcategory', 'slug', 'price',
                     'available',)
-    list_filter = ('available', 'category',)
+    list_filter = ('available', 'subcategory',)
     list_editable = ('price', 'available',)
     prepopulated_fields = {'slug': ('name',)}
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'is_root', 'slug',)
+    list_display = ('name', 'slug',)
+    prepopulated_fields = {'slug': ('name',)}
+
+    inlines = [CategoryInline]
+
+
+class SubcategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'parent')
     prepopulated_fields = {'slug': ('name',)}
 
 
@@ -33,3 +45,4 @@ class ReviewsAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Review, ReviewsAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Subcategory, SubcategoryAdmin)

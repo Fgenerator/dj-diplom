@@ -3,10 +3,11 @@ from ckeditor.fields import RichTextField
 
 
 class Product(models.Model):
-    category = models.ForeignKey('Category',
-                                 related_name='products',
-                                 default=None,
-                                 on_delete=models.CASCADE)
+    subcategory = models.ForeignKey('Subcategory',
+                                    related_name='products',
+                                    default=None,
+                                    null=True,
+                                    on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True, default=None)
     image = models.ImageField(upload_to='products',
@@ -28,12 +29,30 @@ class Category(models.Model):
                             db_index=True)
     slug = models.SlugField(max_length=200,
                             unique=True, default=None)
-    is_root = models.BooleanField(default=True)
 
     class Meta:
         ordering = ('name',)
         verbose_name = 'category'
         verbose_name_plural = 'categories'
+
+    def __str__(self):
+        return self.name
+
+
+class Subcategory(models.Model):
+    name = models.CharField(max_length=200,
+                            db_index=True)
+    slug = models.SlugField(max_length=200,
+                            unique=True, default=None)
+    parent = models.ForeignKey(Category,
+                               related_name='child',
+                               default=None,
+                               on_delete=models.PROTECT)
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'subcategory'
+        verbose_name_plural = 'subcategories'
 
     def __str__(self):
         return self.name

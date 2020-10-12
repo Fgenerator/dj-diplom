@@ -5,7 +5,7 @@ from django.views.decorators.http import require_POST
 
 from .cart import Cart
 from .forms import SignUpForm, CartAddProductForm
-from .models import Category, Product, Review
+from .models import Category, Product, Review, Subcategory
 
 import urllib
 from django.core.paginator import Paginator
@@ -13,7 +13,6 @@ from django.core.paginator import Paginator
 
 def signup_view(request):
     template = 'registration/signup.html'
-    categories = Category.objects.all()
     message = ''
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -28,7 +27,6 @@ def signup_view(request):
 
     context = {
         'form': form,
-        'categories': categories,
         'message': message,
     }
 
@@ -37,12 +35,10 @@ def signup_view(request):
 
 def index_view(request):
     template = 'index.html'
-    categories = Category.objects.all()
     reviews = Review.objects.all()
     cart_product_form = CartAddProductForm()
 
     context = {
-        'categories': categories,
         'reviews': reviews,
         'cart_product_form': cart_product_form,
     }
@@ -52,11 +48,9 @@ def index_view(request):
 
 def product_view(request, product_id):
     template = 'product.html'
-    categories = Category.objects.all()
     current_product = get_object_or_404(Product, id=product_id)
     cart_product_form = CartAddProductForm()
     context = {
-        'categories': categories,
         'current_product': current_product,
         'cart_product_form': cart_product_form,
     }
@@ -66,11 +60,10 @@ def product_view(request, product_id):
 
 def category_view(request, category_slug):
     template = 'categories.html'
-    categories = Category.objects.all()
 
     cart_product_form = CartAddProductForm()
 
-    current_category = get_object_or_404(Category, slug=category_slug)
+    current_category = get_object_or_404(Subcategory, slug=category_slug)
     current_products = current_category.products.all()
 
     paginator = Paginator(current_products, 3)
@@ -90,27 +83,9 @@ def category_view(request, category_slug):
         'current_page': current_page,
         'prev_page_url': prev_page_url,
         'next_page_url': next_page_url,
-        'categories': categories,
         'current_category': current_category,
         'cart_product_form': cart_product_form,
     })
-
-
-# def cart_view(request):
-#     template = 'cart.html'
-#     categories = Category.objects.all()
-#     context = {
-#         'categories': categories,
-#     }
-#
-#     return render(request, template, context)
-
-
-def empty_section_view(request):
-    template = 'empty_section.html'
-    context = {}
-
-    return render(request, template, context)
 
 
 def logout_view(request):
@@ -141,7 +116,6 @@ def cart_remove(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
-    categories = Category.objects.all()
 
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(initial={
@@ -150,6 +124,5 @@ def cart_detail(request):
 
     context = {
         'cart': cart,
-        'categories': categories,
     }
     return render(request, 'cart.html', context)

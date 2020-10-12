@@ -3,13 +3,6 @@
 
 {% block title %}Главная страница{% endblock %}
 
-{% block menu %}
-{% for category in categories %}
-<a class="dropdown-item" href="/categories/{{ category.slug }}">
-  {{ category.name }}</a>
-{% endfor %}
-{% endblock %}
-
 {% block content %}
 
 <main role="main">
