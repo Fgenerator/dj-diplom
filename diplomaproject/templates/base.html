@@ -33,7 +33,7 @@
             {{ category.name }}</a>
           <div class="dropdown-menu" aria-labelledby="dropdown01">
               {% for child in category.child.all %}
-                <a class="dropdown-item" href="/categories/{{ child.slug }}">
+                <a class="dropdown-item" href="{% url 'app:categories' child.slug %}">
                   {{ child.name }}
                 </a>
               {% endfor %}

@@ -9,7 +9,7 @@ app_name = 'app'
 urlpatterns = [
     path('', index_view, name='home'),
     path('product/<product_id>', product_view),
-    path('categories/<category_slug>/', category_view),
+    path('categories/<category_slug>/', category_view, name='categories'),
     path('signup/', signup_view, name='signup'),
     path(r'login/',  auth_views.LoginView.as_view(), {'template_name': 'registration/login.html'},
          name='app_login'),
